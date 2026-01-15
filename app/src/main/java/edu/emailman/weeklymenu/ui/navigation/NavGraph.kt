@@ -107,6 +107,7 @@ fun WeeklyMenuNavHost(
                         navController.navigate(Screen.MenuItemEdit.route)
                     },
                     onNavigateBack = {
+                        dashboardViewModel.loadWeeklyMenu()
                         navController.navigate(Screen.Dashboard.route) {
                             popUpTo(Screen.Dashboard.route) { inclusive = true }
                         }
@@ -125,6 +126,7 @@ fun WeeklyMenuNavHost(
                 SettingsScreen(
                     viewModel = settingsViewModel,
                     onNavigateBack = {
+                        dashboardViewModel.loadWeeklyMenu()
                         navController.navigate(Screen.Dashboard.route) {
                             popUpTo(Screen.Dashboard.route) { inclusive = true }
                         }
