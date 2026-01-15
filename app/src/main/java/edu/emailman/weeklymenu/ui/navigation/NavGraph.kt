@@ -31,10 +31,10 @@ import edu.emailman.weeklymenu.ui.viewmodel.MenuItemViewModel
 import edu.emailman.weeklymenu.ui.viewmodel.SettingsViewModel
 
 sealed class Screen(val route: String, val title: String, val icon: ImageVector?) {
-    data object Dashboard : Screen("dashboard", "Dashboard", Icons.Default.Home)
+    data object Dashboard : Screen("dashboard", "Weekly Menu", Icons.Default.Home)
     data object MenuItems : Screen("menu_items", "Menu Items", Icons.AutoMirrored.Filled.List)
     data object MenuItemEdit : Screen("menu_item_edit", "Edit", null)
-    data object Settings : Screen("settings", "Settings", Icons.Default.Settings)
+    data object Settings : Screen("settings", "Daily Category", Icons.Default.Settings)
 }
 
 private val bottomNavItems = listOf(Screen.Dashboard, Screen.MenuItems, Screen.Settings)
@@ -105,6 +105,11 @@ fun WeeklyMenuNavHost(
                     },
                     onItemClick = {
                         navController.navigate(Screen.MenuItemEdit.route)
+                    },
+                    onNavigateBack = {
+                        navController.navigate(Screen.Dashboard.route) {
+                            popUpTo(Screen.Dashboard.route) { inclusive = true }
+                        }
                     }
                 )
             }
@@ -117,7 +122,14 @@ fun WeeklyMenuNavHost(
                 )
             }
             composable(Screen.Settings.route) {
-                SettingsScreen(viewModel = settingsViewModel)
+                SettingsScreen(
+                    viewModel = settingsViewModel,
+                    onNavigateBack = {
+                        navController.navigate(Screen.Dashboard.route) {
+                            popUpTo(Screen.Dashboard.route) { inclusive = true }
+                        }
+                    }
+                )
             }
         }
     }
