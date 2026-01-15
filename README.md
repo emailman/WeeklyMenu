@@ -5,9 +5,14 @@ A modern Android meal planning app that helps you organize your weekly menu with
 ## Features
 
 - **Rolling 7-Day Dashboard** - View your meal plan starting from today with full date display (e.g., "Wednesday, Jan 15"), followed by the next 6 days
-- **Smart Meal Assignment** - Automatically assigns meals based on configurable food categories per day (Beef, Chicken, Pork, Fish, Vegetarian)
+- **Smart Meal Assignment** - Automatically assigns meals based on configurable food categories per day
+- **8 Category Options**:
+  - **Food Categories**: Beef, Chicken, Pork, Fish, Vegetarian
+  - **Wildcard**: Random pick from all food categories
+  - **Leftovers**: No meal assignment - use what's in the fridge
+  - **Eat Out**: No meal assignment - enjoy a restaurant meal
 - **Menu Item Library** - Manage your personal collection of meals with names, descriptions, and star ratings
-- **Customizable Day Categories** - Configure which food category is assigned to each day of the week
+- **Customizable Day Categories** - Configure which category is assigned to each day (changes save automatically)
 - **Quick Regeneration** - Tap any day to get a new random meal suggestion from that day's category
 
 ## Screenshots
@@ -45,7 +50,7 @@ app/src/main/java/edu/emailman/weeklymenu/
 |--------|-------------|
 | Dashboard | Rolling 7-day meal view starting from today, with full date display |
 | Menu Items | Browse, add, edit, and delete meals organized by category |
-| Settings | Configure food category assignments for each day |
+| Settings | Configure category assignments for each day (auto-saves) |
 
 ## Requirements
 

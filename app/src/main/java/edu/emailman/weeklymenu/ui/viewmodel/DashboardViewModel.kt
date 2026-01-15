@@ -3,6 +3,7 @@ package edu.emailman.weeklymenu.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import edu.emailman.weeklymenu.data.model.Category
 import edu.emailman.weeklymenu.data.model.MenuItem
 import edu.emailman.weeklymenu.data.model.WeeklyMenuEntry
 import edu.emailman.weeklymenu.data.repository.MenuRepository
@@ -68,22 +69,40 @@ class DashboardViewModel(private val repository: MenuRepository) : ViewModel() {
 
                 val dayCategory = dayCategories.find { it.dayOfWeek == dayOfWeek }
                 val category = dayCategory?.category ?: "CHICKEN"
+                val categoryEnum = Category.fromString(category)
 
                 val existingEntry = existingEntries.find { it.dayOfWeek == dayOfWeek }
-                val menuItem = if (existingEntry != null) {
-                    repository.getMenuItemById(existingEntry.menuItemId)
-                } else {
-                    val randomItem = repository.getRandomMenuItemForCategory(category)
-                    if (randomItem != null) {
-                        repository.saveWeeklyEntry(
-                            WeeklyMenuEntry(
-                                weekStartDate = weekStartDate,
-                                dayOfWeek = dayOfWeek,
-                                menuItemId = randomItem.id
-                            )
-                        )
+                val menuItem = when (categoryEnum) {
+                    Category.LEFTOVERS, Category.EAT_OUT -> null
+                    else -> {
+                        val existingItem = if (existingEntry != null) {
+                            repository.getMenuItemById(existingEntry.menuItemId)
+                        } else null
+
+                        // Check if existing item matches current category (or is valid for Wildcard)
+                        val needsNewItem = existingItem == null ||
+                            (categoryEnum != Category.WILDCARD && existingItem.category != category)
+
+                        if (needsNewItem) {
+                            val randomItem = if (categoryEnum == Category.WILDCARD) {
+                                repository.getRandomMenuItemFromAnyCategory()
+                            } else {
+                                repository.getRandomMenuItemForCategory(category)
+                            }
+                            if (randomItem != null) {
+                                repository.saveWeeklyEntry(
+                                    WeeklyMenuEntry(
+                                        weekStartDate = weekStartDate,
+                                        dayOfWeek = dayOfWeek,
+                                        menuItemId = randomItem.id
+                                    )
+                                )
+                            }
+                            randomItem
+                        } else {
+                            existingItem
+                        }
                     }
-                    randomItem
                 }
 
                 weeklyMenu.add(
@@ -114,8 +133,19 @@ class DashboardViewModel(private val repository: MenuRepository) : ViewModel() {
             val dayCategories = repository.getAllDayCategories().first()
             val dayCategory = dayCategories.find { it.dayOfWeek == dayOfWeek }
             val category = dayCategory?.category ?: "CHICKEN"
+            val categoryEnum = Category.fromString(category)
 
-            val randomItem = repository.getRandomMenuItemForCategory(category)
+            // Don't regenerate for Leftovers or Eat Out
+            if (categoryEnum == Category.LEFTOVERS || categoryEnum == Category.EAT_OUT) {
+                return@launch
+            }
+
+            val randomItem = if (categoryEnum == Category.WILDCARD) {
+                repository.getRandomMenuItemFromAnyCategory()
+            } else {
+                repository.getRandomMenuItemForCategory(category)
+            }
+
             if (randomItem != null) {
                 repository.saveWeeklyEntry(
                     WeeklyMenuEntry(

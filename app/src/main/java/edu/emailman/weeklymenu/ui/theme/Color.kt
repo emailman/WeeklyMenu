@@ -16,3 +16,6 @@ val FishColor = Color(0xFF4FC3F7)
 val VegetarianColor = Color(0xFF81C784)
 val BeefColor = Color(0xFFE57373)
 val ChickenColor = Color(0xFFFFD54F)
+val WildcardColor = Color(0xFFBA68C8)  // Purple
+val LeftoversColor = Color(0xFF90A4AE)  // Blue Grey
+val EatOutColor = Color(0xFFFF8A65)     // Deep Orange

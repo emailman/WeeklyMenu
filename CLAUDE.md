@@ -1,7 +1,13 @@
 # Project Context for Claude
 
 ## Project Overview
-Weekly Menu is an Android meal planning app built with Kotlin and Jetpack Compose. It helps users organize weekly meals by automatically assigning dishes based on food categories (Beef, Chicken, Pork, Fish, Vegetarian) to specific days.
+Weekly Menu is an Android meal planning app built with Kotlin and Jetpack Compose. It helps users organize weekly meals by automatically assigning dishes based on food categories to specific days.
+
+## Categories
+- **Food Categories**: Beef, Chicken, Pork, Fish, Vegetarian (have menu items)
+- **Wildcard**: Random pick from all food categories
+- **Leftovers**: No meal pick - displays "Use up leftovers from the fridge"
+- **Eat Out**: No meal pick - displays "Enjoy a meal out!"
 
 ## Tech Stack
 - Kotlin, Android API 24-36
@@ -25,7 +31,7 @@ Weekly Menu is an Android meal planning app built with Kotlin and Jetpack Compos
 ## Main Features
 - Dashboard: Rolling 7-day view starting from today with full date display (e.g., "Wednesday, Jan 15"), tap to regenerate meal
 - Menu Items: CRUD operations, swipe-to-delete, star ratings
-- Settings: Configure category per day of week
+- Settings: Configure category per day of week (auto-saves on change)
 
 ## Sample Data
 App initializes with 25 pre-populated menu items across 5 categories.
@@ -34,4 +40,5 @@ App initializes with 25 pre-populated menu items across 5 categories.
 - Core functionality complete
 - Dashboard shows rolling 7-day view starting from today
 - Handles week boundaries correctly (when 7-day window spans two calendar weeks)
+- Validates menu items match current category settings (auto-regenerates if category changed)
 - No known bugs or pending tasks

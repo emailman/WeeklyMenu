@@ -14,9 +14,12 @@ import androidx.compose.ui.unit.dp
 import edu.emailman.weeklymenu.data.model.Category
 import edu.emailman.weeklymenu.ui.theme.BeefColor
 import edu.emailman.weeklymenu.ui.theme.ChickenColor
+import edu.emailman.weeklymenu.ui.theme.EatOutColor
 import edu.emailman.weeklymenu.ui.theme.FishColor
+import edu.emailman.weeklymenu.ui.theme.LeftoversColor
 import edu.emailman.weeklymenu.ui.theme.PorkColor
 import edu.emailman.weeklymenu.ui.theme.VegetarianColor
+import edu.emailman.weeklymenu.ui.theme.WildcardColor
 
 @Composable
 fun CategoryChip(
@@ -24,7 +27,8 @@ fun CategoryChip(
     modifier: Modifier = Modifier
 ) {
     val backgroundColor = getCategoryColor(category)
-    val textColor = if (backgroundColor == ChickenColor || backgroundColor == PorkColor) {
+    val textColor = if (backgroundColor == ChickenColor || backgroundColor == PorkColor ||
+                        backgroundColor == LeftoversColor || backgroundColor == EatOutColor) {
         Color.Black
     } else {
         Color.White
@@ -51,5 +55,8 @@ fun getCategoryColor(category: String): Color {
         Category.VEGETARIAN -> VegetarianColor
         Category.BEEF -> BeefColor
         Category.CHICKEN -> ChickenColor
+        Category.WILDCARD -> WildcardColor
+        Category.LEFTOVERS -> LeftoversColor
+        Category.EAT_OUT -> EatOutColor
     }
 }

@@ -20,8 +20,7 @@ data class DayCategorySetting(
 
 data class SettingsUiState(
     val dayCategories: List<DayCategorySetting> = emptyList(),
-    val isLoading: Boolean = true,
-    val isSaved: Boolean = false
+    val isLoading: Boolean = true
 )
 
 class SettingsViewModel(private val repository: MenuRepository) : ViewModel() {
@@ -61,28 +60,15 @@ class SettingsViewModel(private val repository: MenuRepository) : ViewModel() {
         val index = currentSettings.indexOfFirst { it.dayOfWeek == dayOfWeek }
         if (index != -1) {
             currentSettings[index] = currentSettings[index].copy(category = category)
-            _uiState.value = _uiState.value.copy(
-                dayCategories = currentSettings,
-                isSaved = false
-            )
-        }
-    }
+            _uiState.value = _uiState.value.copy(dayCategories = currentSettings)
 
-    fun saveSettings() {
-        viewModelScope.launch {
-            val dayCategories = _uiState.value.dayCategories.map { setting ->
-                DayCategory(
-                    dayOfWeek = setting.dayOfWeek,
-                    category = setting.category.name
+            // Save immediately to database
+            viewModelScope.launch {
+                repository.updateDayCategory(
+                    DayCategory(dayOfWeek = dayOfWeek, category = category.name)
                 )
             }
-            repository.updateDayCategories(dayCategories)
-            _uiState.value = _uiState.value.copy(isSaved = true)
         }
-    }
-
-    fun resetSavedFlag() {
-        _uiState.value = _uiState.value.copy(isSaved = false)
     }
 
     class Factory(private val repository: MenuRepository) : ViewModelProvider.Factory {

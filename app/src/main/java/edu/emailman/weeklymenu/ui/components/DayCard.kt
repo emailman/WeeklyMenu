@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import edu.emailman.weeklymenu.data.model.Category
 import edu.emailman.weeklymenu.ui.viewmodel.DayMenuState
 
 @Composable
@@ -49,32 +50,53 @@ fun DayCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            if (dayMenuState.menuItem != null) {
-                Text(
-                    text = dayMenuState.menuItem.name,
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                Text(
-                    text = dayMenuState.menuItem.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                StarRating(rating = dayMenuState.menuItem.rating)
-            } else {
-                Text(
-                    text = "No menu items available",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            val categoryEnum = Category.fromString(dayMenuState.category)
+            when {
+                categoryEnum == Category.LEFTOVERS -> {
+                    Text(
+                        text = "Use up leftovers from the fridge",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                categoryEnum == Category.EAT_OUT -> {
+                    Text(
+                        text = "Enjoy a meal out!",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                dayMenuState.menuItem != null -> {
+                    Text(
+                        text = dayMenuState.menuItem.name,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = dayMenuState.menuItem.description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    StarRating(rating = dayMenuState.menuItem.rating)
+                }
+                else -> {
+                    Text(
+                        text = "No menu items available",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "Tap to change",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.primary
-            )
+            // Only show "Tap to change" for categories that can be regenerated
+            if (categoryEnum != Category.LEFTOVERS && categoryEnum != Category.EAT_OUT) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "Tap to change",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
 }

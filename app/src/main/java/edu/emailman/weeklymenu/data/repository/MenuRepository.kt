@@ -63,6 +63,11 @@ class MenuRepository(
         return if (items.isNotEmpty()) items.random() else null
     }
 
+    suspend fun getRandomMenuItemFromAnyCategory(): MenuItem? {
+        val items = menuItemDao.getAllMenuItemsList()
+        return if (items.isNotEmpty()) items.random() else null
+    }
+
     // Utility
     fun getWeekStartDate(): Long {
         val calendar = Calendar.getInstance()
