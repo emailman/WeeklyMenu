@@ -38,7 +38,17 @@ App initializes with 25 pre-populated menu items across 5 categories.
 
 ## Current State
 - Core functionality complete
-- Dashboard shows rolling 7-day view starting from today
+- Dashboard shows rolling 7-day view starting from today (format: "Wednesday, Jan 15")
 - Handles week boundaries correctly (when 7-day window spans two calendar weeks)
 - Validates menu items match current category settings (auto-regenerates if category changed)
+- Settings auto-save when category is changed (no Save button)
+- 8 categories available: Beef, Chicken, Pork, Fish, Vegetarian, Wildcard, Leftovers, Eat Out
+- GitHub repo: https://github.com/emailman/WeeklyMenu
 - No known bugs or pending tasks
+
+## Recent Changes (Jan 2026)
+1. Changed dashboard from fixed Sunday-Saturday week to rolling 7-day view starting from today
+2. Added date display format "Wednesday, Jan 15" to day cards
+3. Added 3 new categories: Wildcard, Leftovers, Eat Out
+4. Implemented category validation - regenerates meal if stored item doesn't match current category
+5. Settings screen now auto-saves (removed Save button and snackbar)
